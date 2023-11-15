@@ -1,5 +1,5 @@
 ---
-title: 'The Basics of ggplot2'
+title: 'Fundamentals of ggplot2'
 output: html_document
 aliases: /plotting-with-ggplot-the-basics/
 ---
@@ -10,150 +10,140 @@ aliases: /plotting-with-ggplot-the-basics/
 library(ggplot2)
 ```
 
-https://www.data-to-viz.com/
+This lesson has been mainly borrowed from https://uc-r.github.io/ggplot_intro
 
-This lesson has been mainly borrowed from 
-https://uc-r.github.io/ggplot_intro
-
-## The Dataset
+## Dataset
 
 ```{r}
-
 # View a summary of the data 
 mpg
-
 ```
 
 
-## The Basics
+## Basics
 In order to create a plot, you:
 
-- Call the ggplot() function on your data which creates a blank canvas
-- Specify aesthetic mappings, which specifies how you want to map variables to visual aspects.
-- You then add new layers that are geometric objects which will show up on the plot. 
+- Call the `ggplot()` function on your data which creates a blank canvas
+- Specify aesthetic mappings, which control how you want to map variables to visual aspects
+- Add new layers that are geometric objects which will show up on the plot
 
 ```{r}
 # create canvas
 ggplot(mpg)
 
-# variables of interest mapped
+# map variables of interest
 ggplot(mpg, aes(x = displ, y = hwy))
 
-# data plotted
+# add geom object
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_point()
-
 ```
 
 When we add the geom layer we use the addition (+) operator. As you add new layers you will always use + to add onto your visualization.
 
-Aesthetic Mappings
-The aesthetic mappings take properties of the data and use them to influence visual characteristics, such as position, color, size, shape, or transparency. Each visual characteristic can thus encode an aspect of the data and be used to convey information.
+## Aesthetic mappings
 
-All aesthetics for a plot are specified in the aes() function call (later in this tutorial you will see that each geom layer can have its own aes specification).  
+The aesthetic mappings take properties of the data and use them to influence visual characteristics, such as position, colour, size, shape, or transparency. Each visual characteristic can thus encode an aspect of the data and be used to convey information.
+
+All aesthetics for a plot are specified in the `aes()` function call (later in this tutorial you will see that each geom layer can have its own aes specification).  
 
 ```{r}
-# add a mapping from the class of the cars to a color characteristic
-ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+# add a mapping from the class of the cars to a colour characteristic
+ggplot(mpg, aes(x = displ, y = hwy, colour = class)) +
   geom_point()
-
 ```
 
 
-Note that "aesthetics" in ggplot refers to WHAT is plotted, now HOW it is plotted, unlike the word's usual meaning. Using the aes() function will cause the visual to be based on the *data* specified in the argument. For example, using aes(color = "blue") won’t cause the geometry’s color to be “blue”, but will instead cause the visual to be mapped from the vector c("blue") — as if we only had a single type of engine that happened to be called “blue”. If you wish to apply an aesthetic property to an entire geometry, you can set that property as an argument to the geom method, OUTSIDE of the aes() call:
+Note that 'aesthetics' in ggplot refers to WHAT is plotted, now HOW it is plotted, unlike the word's usual meaning. Using the `aes()` function will cause the visual to be based on the *data* specified in the argument. For example, using `aes(colour = "blue")` won’t cause the geometry's colour to be 'blue', but will instead cause the visual to be mapped from the vector `c("blue")` — as if we only had a single type of engine that happened to be called 'blue'. If you wish to apply an aesthetic property to an entire geometry, you can set that property as an argument to the geom method, OUTSIDE of the `aes()` call:
 
 ```{r}
-# Illustrate the common mistake of trying to specify a color within the aes() function
-ggplot(mpg, aes(x = displ, y = hwy, color = "blue")) +
+# illustrate the common mistake of trying to specify a colour within the aes() function
+ggplot(mpg, aes(x = displ, y = hwy, colour = "blue")) +
   geom_point()
 
-# Here is the correct way
+# here is the correct way
 ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point(color = "blue")
+  geom_point(colour = "blue")
 ```
 
 ### Exercise:
 
-1. Make a scatterplot of the relationship between the city and highway mileage of each car. Color all the points red.
+1. Make a scatterplot of the relationship between the city and highway mileage of each car. Colour all the points red.
 
 ```{r}
 # YOUR CODE HERE
-ggplot(mpg, aes(x = cty, y = hwy)) + geom_point(col = "red")
+ggplot(mpg, aes(x = cty, y = hwy)) + 
+  geom_point(colour = "red")
 ```
 
-
-2. Now, color the points in your scatterplot by the number of cylinders each car has.
+2. Now, colour the points in your scatterplot by the number of cylinders each car has.
 
 ```{r}
 # YOUR CODE HERE
-ggplot(mpg, aes(x = cty, y = hwy, col = cyl)) + geom_point()
-ggplot(mpg, aes(x = cty, y = hwy, col = factor(cyl))) + geom_point()
-
+ggplot(mpg, aes(x = cty, y = hwy, colour = cyl)) + 
+  geom_point()
 ```
 
+## Specifying geometries
 
-## Specifying Geometries
 Building on these basics, ggplot2 can be used to build almost any kind of plot you may want. These plots are declared using functions.
 
 The most obvious distinction between plots is what geometric objects (geoms) they include. ggplot2 supports a number of different types of geoms, including:
 
-geom_point 
-geom_line 
-geom_smooth 
-geom_bar 
-geom_boxplot
-geom_histogram 
-geom_polygon 
-geom_map 
+- `geom_point()`
+- `geom_line()`
+- `geom_smooth()`
+- `geom_bar()`
+- `geom_boxplot()`
+- `geom_histogram()`
+- `geom_polygon()`
+- `geom_map()`
 
-Each of these geometries will leverage the aesthetic mappings supplied. For example, you can map data to the location, color, and shape of a geom_point (e.g., points can be circles or squares), or you can map data to the linetype of a geom_line (e.g., solid or dotted).
+Each of these geometries will leverage the aesthetic mappings supplied. For example, you can map data to the location, colour, and shape of a geom_point (e.g., points can be circles or squares), or you can map data to the linetype of a geom_line (e.g., solid or dotted).
 
-Most geoms require an x and y mapping at the bare minimum.
+Most geoms require an x and y mapping as a bare minimum.
 
 ```{r}
-# x and y mapping needed!
+# x and y mapping needed for geom_point and geom_smooth
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_point()
-
 ggplot(mpg, aes(x = displ, y = hwy)) +
   geom_smooth()
 
-# no y mapping needed!
+# no y mapping needed for geom_bar and geom_histogram
 ggplot(data = mpg, aes(x = class)) +
-  geom_bar()  
-
+  geom_bar()
 ggplot(data = mpg, aes(x = hwy)) +
   geom_histogram() 
-
 ```
 
 
 ### Exercise: 
 
-1. Create a box-and-whisker plot of the engine displacement of the different drive types (front, rear, or 4wd)
+1. Create a box-and-whisker plot of the engine displacement of the different drive types (front, rear, or 4wd).
 
 ```{r}
-
 # YOUR CODE HERE
-ggplot(mpg, aes(x = drv, y = displ)) + geom_boxplot()
-
+ggplot(mpg, aes(x = drv, y = displ)) + 
+  geom_boxplot()
 ```
 
 2. Create a box-and-whisker plot of the engine displacement of the different engine types (cylinders). What happens if your x variable is numeric? How might we fix that?
 
 ```{r}
 # YOUR CODE HERE
-ggplot(mpg, aes(x = cyl, y = displ)) + geom_boxplot()
-
-ggplot(mpg, aes(x = cyl, y = displ, group = cyl)) + geom_boxplot()
-
-ggplot(mpg, aes(x = factor(cyl), y = displ)) + geom_boxplot()
-
+ggplot(mpg, aes(x = cyl, y = displ)) + 
+  geom_boxplot()
+ggplot(mpg, aes(x = cyl, y = displ, group = cyl)) + 
+  geom_boxplot()
+ggplot(mpg, aes(x = factor(cyl), y = displ)) + 
+  geom_boxplot()
 ```
 
 
 ## Layering geometries
-What makes this really powerful is that you can add multiple geometries to a plot, thus allowing you to create complex graphics showing multiple aspects of your data.
+
+What makes this approach really powerful is that you can add multiple geometries to a plot, allowing you to create complex graphics showing multiple aspects of your data.
 
 ```{r}
 # plot with both points and smoothed line
@@ -163,33 +153,29 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
 ```
 
 
-Of course the aesthetics for each geom can be different, so you could show multiple lines on the same plot (or with different colors, styles, etc). It’s also possible to give each geom a different data argument, so that you can show multiple data sets in the same plot.
+Of course, the aesthetics for each geom can be different, so you could show multiple lines on the same plot (or with different colours, styles, etc). It’s also possible to give each geom a different data argument, so that you can show multiple data sets in the same plot.
 
-For example, we can plot both points and a smoothed line for the same x and y variable but specify unique colors within each geom:
+For example, we can plot both points and a smoothed line for the same x and y variable but specify unique colours within each geom:
 
 ```{r}
-# Same as above, but points red and line blue
+# same as above, but points red and line blue
 ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point(color = "blue") +
-  geom_smooth(color = "red")
-
+  geom_point(colour = "blue") +
+  geom_smooth(colour = "red")
 ```
 
 So if we specify an aesthetic within ggplot it will be passed on to each geom that follows. Or we can specify certain aes within each geom, which allows us to only show certain characteristics for that specific layer (i.e. geom_point).
 
 ```{r message=FALSE, warning=FALSE}
-
-# color aesthetic passed to each geom layer
-ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+# colour aesthetic passed to each geom layer
+ggplot(mpg, aes(x = displ, y = hwy, colour = class)) +
   geom_point() +
   geom_smooth(se = FALSE)
 
-# color aesthetic specified for only the geom_point layer
+# colour aesthetic specified for only the geom_point layer
 ggplot(mpg, aes(x = displ, y = hwy)) +
-  geom_point(aes(color = class)) +
+  geom_point(aes(colour = class)) +
   geom_smooth(se = FALSE)
-
-
 ```
 
 ### Exercise:
@@ -198,21 +184,23 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
 
 ```{r}
 #YOUR CODE HERE
-ggplot(mpg, aes(x = factor(cyl), y = displ)) + geom_boxplot() + geom_point()
-
+ggplot(mpg, aes(x = factor(cyl), y = displ)) + 
+  geom_boxplot() + 
+  geom_point()
 ```
 
 
-## Position Adjustments
-In addition to a default statistical transformation, each geom also has a default position adjustment which specifies how different components should be positioned relative to each other. This position is noticeable in a geom_bar if you map a different variable to the color visual characteristic:
+## Position adjustments
+
+In addition to a default statistical transformation, each geom also has a default position adjustment which specifies how different components should be positioned relative to each other. This position is noticeable in a geom_bar if you map a different variable to the colour visual characteristic:
 
 ```{r}
-# bar chart of class, colored by drive (front, rear, 4-wheel)
+# bar chart of class, coloured by drive (front, rear, 4-wheel)
 ggplot(mpg, aes(x = class, fill = drv)) + 
   geom_bar()
 ```
 
-The geom_bar by default uses a position adjustment of "stack", which makes each rectangle’s height proportional to its value and stacks them on top of each other. We can use the position argument to specify what position adjustment rules to follow:
+The geom_bar by default uses a position adjustment of 'stack', which makes each rectangle’s height proportional to its value and stacks them on top of each other. We can use the position argument to specify what position adjustment rules to follow:
 
 ```{r}
 # position = "dodge": values next to each other
@@ -228,70 +216,41 @@ Check the documentation for each particular geom to learn more about its positio
 
 ### Exercise:
 
-1. Take your box-and-whisker plot from the previous exercise and use position = "jitter" in the point geometry layer. What happens?
+1. Take your box-and-whisker plot from the previous exercise and use `position = "jitter"` in the point geometry layer. What happens?
 
 ```{r}
 
 # YOUR CODE HERE
-ggplot(mpg, aes(x = factor(cyl), y = displ)) + geom_boxplot() + geom_point(position = "jitter")
+ggplot(mpg, aes(x = factor(cyl), y = displ)) + 
+  geom_boxplot() + 
+  geom_point(position = "jitter")
+ggplot(mpg, aes(x = factor(cyl), y = displ)) + 
+  geom_boxplot() + 
+  geom_jitter(width = 0.2)
 
-ggplot(mpg, aes(x = factor(cyl), y = displ)) + geom_boxplot() + geom_jitter(width = 0.2)
 ```
 
-2. Create a histogram of the distribution of highway mileage values in mpg. Colour fill the bars by the drive type. Experiment with the position argument in the histogram geometry. What happens?
+2. Create a histogram of the distribution of highway mileage values in mpg. Colour the bars by the drive type. Experiment with the position argument in the histogram geometry. What happens?
 
 ```{r}
-
 # YOUR CODE HERE
-ggplot(mpg, aes(x = hwy, fill = drv)) + geom_histogram(position = "dodge") 
-ggplot(mpg, aes(x = hwy, fill = drv)) + geom_histogram(position = "fill")
-ggplot(mpg, aes(x = hwy, fill = drv)) + geom_histogram(position = "stack")
-
+ggplot(mpg, aes(x = hwy, fill = drv)) + 
+  geom_histogram(position = "dodge") 
+ggplot(mpg, aes(x = hwy, fill = drv)) + 
+  geom_histogram(position = "fill")
+ggplot(mpg, aes(x = hwy, fill = drv)) + 
+  geom_histogram(position = "stack")
 ```
-
-
-## Statistical Transformations (extra material)
-If you look at the below bar chart, you’ll notice that the the y axis was defined for us as the count of elements that have the particular type. This count isn’t part of the data set (it’s not a column in mpg), but is instead a statistical transformation that the geom_bar automatically applies to the data. In particular, it applies the stat_count transformation.
-
-```{r}
-# Barplot of the vehicle classes
-ggplot(mpg, aes(x = class)) +
-  geom_bar()
-
-```
-
-ggplot2 supports many different statistical transformations. For example, the “identity” transformation will leave the data “as is”. You can specify which statistical transformation a geom uses by passing it as the stat argument. For example, consider our data already had the count as a variable:
-
-```{r}
-class_count <- dplyr::count(mpg, class)
-class_count
-
-#We can use stat = "identity" within geom_bar to plot our bar height values to this variable. Also, note that we now include n for our y variable:
-
-ggplot(class_count, aes(x = class, y = n)) +
-  geom_bar(stat = "identity")
-
-```
-
-We can also call stat_ functions directly to add additional layers. For example, here we create a scatter plot of highway miles for each displacement value and then use stat_summary to plot the mean highway miles at each displacement value.
-
-```{r}
-
-ggplot(mpg, aes(displ, hwy)) + 
-  geom_point(color = "grey") + 
-  stat_summary(fun.y = "mean", geom = "line", size = 1, linetype = "dashed")
-
-```
-
 
 # PART II - Refining your plot
-## Managing Scales
+
+## Managing scales
 
 Whenever you specify an aesthetic mapping, `ggplot` uses a particular scale to determine the range of values that the data should map to. Thus when you specify
 
 ```{r}
-# color the data by engine type
-ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+# colour the data by engine type
+ggplot(mpg, aes(x = displ, y = hwy, colour = class)) +
   geom_point()
 ```
 
@@ -299,14 +258,14 @@ ggplot automatically adds a scale for each mapping to the plot:
 
 ```{r}
 # same as above, with explicit scales
-ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+ggplot(mpg, aes(x = displ, y = hwy, colour = class)) +
   geom_point() +
   scale_x_continuous() +
   scale_y_continuous() +
   scale_colour_discrete()
 ```
 
-Each scale can be represented by a function with the following name: `scale_`, followed by the name of the aesthetic property, followed by an _ and the name of the scale. A `continuous` scale will handle things like numeric data (where there is a continuous set of numbers), whereas a `discrete` scale will handle things like colors (since there is a small list of distinct colors).
+Each scale can be represented by a function with the following name: `scale_`, followed by the name of the aesthetic property, followed by an _ and the name of the scale. A `continuous` scale will handle things like numeric data (where there is a continuous set of numbers), whereas a `discrete` scale will handle things like colours (since there is a small list of distinct colours).
 
 While the default scales will work fine, it is possible to explicitly add different scales to replace the defaults. For example, you can use a scale to change the direction of an axis:
 
@@ -326,40 +285,42 @@ ggplot(mpg, aes(x = class, fill = drv)) +
   scale_y_continuous(breaks = seq(0, 1, by = .2), labels = scales::percent)
 ```
 
-A common parameter to change is which set of colors to use in a plot. While you can use the default coloring, a more common option is to leverage the pre-defined palettes from [colorbrewer.org](https://colorbrewer2.org/). These color sets have been carefully designed to look good and to be viewable to people with certain forms of color blindness. We can leverage color brewer palletes by specifying the `scale_color_brewer()` function, passing the pallete as an argument.
+A common parameter to change is which set of colours to use in a plot. While you can use the default colouring, a more common option is to leverage the pre-defined palettes from [colourbrewer.org](https://colourbrewer2.org/). These colour sets have been carefully designed to look good and to be viewable to people with certain forms of colour blindness. We can leverage colour brewer palletes by specifying the `scale_colour_brewer()` function, passing the pallete as an argument.
 
 ```{r}
-# default color brewer
-ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+# default colour brewer
+ggplot(mpg, aes(x = displ, y = hwy, colour = class)) +
   geom_point() +
-  scale_color_brewer()
+  scale_colour_brewer()
 
-# specifying color palette
-ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+# specifying colour palette
+ggplot(mpg, aes(x = displ, y = hwy, colour = class)) +
   geom_point() +
-  scale_color_brewer(palette = "Set3")
+  scale_colour_brewer(palette = "Set3")
 ```
 
-Note that you can get the palette name from the colorbrewer website by looking at the scheme query parameter in the URL. Or see the diagram here and hover the mouse over each palette for the name.
+Note that you can get the palette name from the colourbrewer website by looking at the scheme query parameter in the URL. Or see the diagram here and hover the mouse over each palette for the name.
 
-You can also specify continuous color values by using a gradient scale, or manually specify the colors you want to use as a named vector.
+You can also specify continuous colour values by using a gradient scale, or manually specify the colours you want to use as a named vector.
 
 ### Exercises
 
-1. Produce a scatter plot with `displ` on the x axis and `hwy` on the y axis, and color by `drv`. Next, go to [colorbrewer.org](https://colorbrewer2.org/) and find an appropriate color palette that is colorblind safe. Update your plot with that pallete.
+1. Produce a scatter plot with `displ` on the x axis and `hwy` on the y axis, and colour by `drv`. Next, go to [colourbrewer.org](https://colourbrewer2.org/) and find an appropriate colour palette that is colourblind safe. Update your plot with that pallete.
 
 ```{r}
-ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
+# YOUR CODE HERE
+ggplot(mpg, aes(x = displ, y = hwy, colour = drv)) +
   geom_point() +
-  scale_color_brewer(palette = "Dark2")
+  scale_colour_brewer(palette = "Dark2")
 ```
 
 2. Your plot should currently have three breaks on the y axis at 20, 30, and 40. Using `scale_y_continuous()`, try increasing the number of breaks so that there are breaks at 15, 20, 25, 30, 35 and so on. Hint: Check the help file using `?scale_y_continuous`.
 
 ```{r}
-ggplot(mpg, aes(x = displ, y = hwy, color = drv)) +
+# YOUR CODE HERE
+ggplot(mpg, aes(x = displ, y = hwy, colour = drv)) +
   geom_point() +
-  scale_color_brewer(palette = "Dark2") +
+  scale_colour_brewer(palette = "Dark2") +
   scale_y_continuous(n.breaks = 6)
 ```
 
@@ -386,6 +347,7 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
 1. Produce a scatter plot with a smoothed line with `displ` on the x axis and `hwy` on the y axis. Facet the plot by `drv` using `facet_grid()`.
 
 ```{r}
+# YOUR CODE HERE
 ggplot(mpg, aes(x = displ, y = hwy)) +
     geom_point() +
     geom_smooth() +
@@ -395,26 +357,25 @@ ggplot(mpg, aes(x = displ, y = hwy)) +
 2. Now try setting `scales='free'` inside `facet_grid()`? What has changed?
 
 ```{r}
+# YOUR CODE HERE
 ggplot(mpg, aes(x = displ, y = hwy)) +
     geom_point() +
     geom_smooth() +
     facet_grid(drv ~ ., scales = 'free')
 ```
 
-## Labels & Annotations
+## Labels & annotations
 
 Textual labels and annotations (on the plot, axes, geometry, and legend) are an important part of making a plot understandable and communicating information. Although not an explicit part of the Grammar of Graphics (the would be considered a form of geometry), `ggplot` makes it easy to add such annotations.
 
 You can add titles and axis labels to a chart using the `labs()` function (not `labels`, which is a different R function!):
 
 ```{r}
-ggplot(mpg, aes(x = displ, y = hwy, color = class)) +
+ggplot(mpg, aes(x = displ, y = hwy, colour = class)) +
   geom_point() +
   labs(title = "Fuel Efficiency by Engine Power",
        subtitle = "Fuel economy data from 1999 and 2008 for 38 popular models of cars",
        x = "Engine power (litres displacement)",
        y = "Fuel Efficiency (miles per gallon)",
-       color = "Car Type")
+       colour = "Car Type")
 ```
-
-
