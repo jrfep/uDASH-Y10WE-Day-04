@@ -13,7 +13,7 @@ The R package `ggplot2` is dedicated to data visualization in R. It can greatly 
 
 The author of the package, Hadley Wickham, was awarded the most prestigious award for young statisticians, the COPSS Award, in 2019. Hadley Wickham also created other great packages, including `tidyverse`.
 
-![2019 COPSS Presidents' Awardee: Hadley Wickham](2019_COPSS_Award.png)
+![2019 COPSS Presidents' Awardee: Hadley Wickham](img/2019_COPSS_Award.png)
 
 # PART I - Creating your plot
 
@@ -22,11 +22,11 @@ The author of the package, Hadley Wickham, was awarded the most prestigious awar
 library(ggplot2)
 ```
 
-![Building Layers using ggplot2](ggplot2_Layers.png)
+![Building Layers using ggplot2](img/ggplot2_Layers.png)
 
 `ggplot2` builds charts through layers using `geom_` functions, including `geom_point`, `geom_line`, `geom_bar`, `geom_boxplot`, `geom_smooth`, `geom_tile`, `geom_violin`, `geom_hline`, `geom_vline`, `geom_histogram`, `geom_sf`, `geom_contour`, `geom_density`, `geom_hex`, `geom_jitter`, `geom_map`, `geom_area`, `geom_path`,`geom_segment`,`geom_qq`, ...
 
-![A World of GEOM](examples.png)
+![A World of GEOM](img/examples.png)
 
 ## Data
 
