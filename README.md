@@ -1,6 +1,6 @@
 # uDASH Year 10 Work Experience
 
-This repository includes material for lectures/practice for day 2 of the Work Experience
+This repository includes material for lectures/practice for day 4 of the Work Experience
 
 ## About uDASH
 
